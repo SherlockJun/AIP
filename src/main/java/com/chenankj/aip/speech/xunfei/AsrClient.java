@@ -3,6 +3,8 @@ package com.chenankj.aip.speech.xunfei;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.chenankj.aip.exception.AipException;
+import com.chenankj.aip.exception.ErrorCode;
 import com.iflytek.msp.cpdb.lfasr.client.LfasrClientImp;
 import com.iflytek.msp.cpdb.lfasr.exception.LfasrException;
 import com.iflytek.msp.cpdb.lfasr.model.LfasrType;
@@ -32,26 +34,23 @@ public class AsrClient {
             File audio = new File(path);
             //校验文件是否存在
             if(!audio.exists()){
-                //记录日志
-                throw new RuntimeException("录音文件不存在!");
+                throw new AipException(ErrorCode.Err0001);
             }
             //音频文件大小校验
             if(getFileSize(audio) > 500*1024*1024){
-                //记录日志
-                throw new RuntimeException("录音文件超过大小!");
+                throw new AipException(ErrorCode.Err0002);
             }
             //音频文件格式校验
             if(!LfasrType.LFASR_TELEPHONY_RECORDED_AUDIO.isSupportedAudios(audio)
                     && !LfasrType.LFASR_STANDARD_RECORDED_AUDIO.isSupportedAudios(audio)){
-                //记录日志
-                throw new RuntimeException("不支持的录音文件格式!");
+                throw new AipException(ErrorCode.Err0003);
             }
 
             LfasrClientImp lfasrClientImp = new LfasrClientImp();
             Message message = lfasrClientImp.lfasrUpload(path, LfasrType.LFASR_STANDARD_RECORDED_AUDIO);
             if (message.getOk() != 0 || StringUtils.isEmpty(message.getData())) {
-                //预处理失败
-                throw new RuntimeException("预处理失败!");
+                //录音文件预处理失败
+                throw new AipException(ErrorCode.Err0004);
             }
             String taskId = message.getData();
 
@@ -84,16 +83,16 @@ public class AsrClient {
             //获取结果
             Message taskResult = lfasrClientImp.lfasrGetResult(taskId);
             if(taskResult == null){
-                throw new RuntimeException("获取结果接口请求失败!");
+                throw new AipException(ErrorCode.Err0005);
             }
-
             if(taskResult.getOk() != 0){
-                throw new RuntimeException("获取结果失败!");
+                throw new AipException(ErrorCode.Err0006);
             }
             result = getContents(taskResult.getData());
 
         } catch (LfasrException e) {
             e.printStackTrace();
+            throw new AipException(ErrorCode.Err0007, e.getMessage());
         }
         return result;
     }

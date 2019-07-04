@@ -1,11 +1,9 @@
 package com.chenankj;
 
 import static org.junit.Assert.assertTrue;
-
 import com.chenankj.aip.ocr.OcrClient;
-import org.json.JSONObject;
+import com.chenankj.aip.util.ImageUtil;
 import org.junit.Test;
-
 import java.util.HashMap;
 
 /**
@@ -24,9 +22,16 @@ public class AppTest
 
     @Test
     public void testBaiduOcr(){
-        String path = "E:\\chenankeji\\广东省应急厅\\ocr识别\\7082137cbf89dbddef7384556ea216a.jpg";
-        OcrClient ocrClient = new OcrClient();
-        JSONObject res = ocrClient.basicGeneral(path,new HashMap<String, String>());
+        String jpgFile = "E:\\chenankeji\\广东省应急厅\\ocr识别\\7082137cbf89dbddef7384556ea216a.jpg";
+        String tifFile = "E:\\chenankeji\\广东省应急厅\\ocr识别\\7082137cbf89dbddef7384556ea216a.tif";
+        String res = OcrClient.basicGeneral(tifFile,new HashMap<String, String>());
+        System.out.println(res);
+    }
+
+    @Test
+    public void testConvertImage(){
+        String path = "E:\\chenankeji\\广东省应急厅\\ocr识别\\7082137cbf89dbddef7384556ea216a.tif";
+        ImageUtil.convertToJpg(path);
     }
 
 }
