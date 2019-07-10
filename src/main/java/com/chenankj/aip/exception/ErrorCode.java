@@ -18,7 +18,12 @@ public enum ErrorCode {
     Err008("Err0008","OCR识别文件不存在!"),
     Err009("Err009","OCR识别不支持的文件格式!"),
     Err010("Err010","OCR识别异常!"),
-    Err011("Err011","未知异常!");
+    Err011("Err011","未知异常!"),
+    Err012("Err012","空的压缩文件!"),
+    Err013("Err013","文件不存在!"),
+    Err014("Err014","不支持的文件格式!"),
+    Err015("Err015","amr格式转换wav格式错误!"),
+    Err016("Err016","创建解压目标目录失败!");
 
     private String errCode;
     private String errMsg;

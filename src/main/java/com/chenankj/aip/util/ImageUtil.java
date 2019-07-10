@@ -1,8 +1,5 @@
 package com.chenankj.aip.util;
 
-
-import org.apache.commons.lang3.StringUtils;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -31,17 +28,6 @@ public class ImageUtil {
             e.printStackTrace();
         }
         return jpgFilePath;
-    }
-
-    public static String getFileExtention(String path){
-        String extention = null;
-        if(StringUtils.isNotBlank(path) && StringUtils.isNotEmpty(path)){
-            int index = path.lastIndexOf(".");
-            if(index > 0){
-                extention = path.substring(index + 1);
-            }
-        }
-        return extention;
     }
 
 }
